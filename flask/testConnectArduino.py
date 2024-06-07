@@ -11,7 +11,7 @@ def main():
 
     # ทดสอบอ่าน holding registers
     # registers = modbus_client.read_holding_registers(address=0, count=1)
-    registers = modbus_client.read_coil_registers(address=1, count=8)
+    registers = modbus_client.read_coil_registers(address=10, count=8)
     if registers is not None:
         print(f"Read registers: {registers}")
     else:
@@ -29,7 +29,7 @@ def main():
     # else:
     #     print("Failed to write register")
 
-    # if modbus_client.write_coil_registers(address=1, boolValueArray=[True, False, True]):
+    # if modbus_client.write_coil_registers(address=0, boolValueArray=[True, False, True, False, True, False, True, True]):
     #     print("Write successful")
     # else:
     #     print("Failed to write register")

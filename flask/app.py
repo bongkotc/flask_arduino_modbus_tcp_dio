@@ -1,20 +1,20 @@
-from flask import Flask,render_template,request,redirect
+from flask import Flask,render_template,request,redirect, jsonify
 from ModbusClientWrapper import ModbusClientWrapper
 
 app=Flask(__name__)
 
-def read_arduino():
-    port = 'COM8'  # เลือก Com port ที่ Arduino ต่อใช้งาน
-    button_address = 0
-    modbus_client = ModbusClientWrapper(port=port)
+def read_button():
+    # port = 'COM8'  # com port ที่ใช้
+    modbus_client = ModbusClientWrapper()
 
     #เปิดการเชื่อมต่อ
     if not modbus_client.connect():
-        print("Failed to connect to the Modbus RTU server")
+        print("Failed to connect to the Modbus TCP server")
         return
 
-    # อ่าน holding registers
-    registers = modbus_client.read_holding_registers(address=button_address, count=1)
+    # ทดสอบอ่าน holding registers
+    # registers = modbus_client.read_holding_registers(address=0, count=1)
+    registers = modbus_client.read_coil_registers(address=10, count=8)
     if registers is not None:
         print(f"Read registers: {registers}")
     else:
@@ -46,14 +46,20 @@ def write_arduino(data):
 #ไฟล์ เริ่มต้น
 @app.route("/")
 def index():
-    arduino_data = read_arduino()
-    return render_template("index.html",arduino_data=arduino_data)
+    arduino_data = read_button()
+    return render_template("index.html",arduino_data=jsonify(arduino_data))
 
 #API อ่านค่า Modbus
 @app.route('/mosbudRead')
 def mosbudRead():
-    arduino_data = read_arduino()
-    return arduino_data
+    arduino_data = read_button()
+    return jsonify(arduino_data)
+
+#API อ่านค่า Modbus
+@app.route('/readButtons')
+def readButtons():
+    arduino_data = read_button()
+    return jsonify(arduino_data)
 
 #API เขียนค่า Modbus
 @app.route('/mosbudWrite',methods=['POST'])
