@@ -30,7 +30,15 @@ EthernetServer ethServer(502);
 
 ModbusTCPServer modbusTCPServer;
 
-const int ledPin = LED_BUILTIN;
+//const int ledPin8 = LED_BUILTIN;
+// Array of LED pins
+const int ledPins[] = {4, 5, 6, 7, 8, 9, 11, 12};
+
+// Array of input pins
+const int inputPins[] = {30, 31, 32, 33, 34, 35, 36, 37};
+
+const int startInputAddressCoil = 10;
+const int numInputAddressCoil = 8;
 
 void setup() {
   // You can use Ethernet.init(pin) to configure the CS pin
@@ -40,6 +48,17 @@ void setup() {
   //Ethernet.init(20);  // Teensy++ 2.0
   //Ethernet.init(15);  // ESP8266 with Adafruit Featherwing Ethernet
   //Ethernet.init(33);  // ESP32 with Adafruit Featherwing Ethernet
+
+  // Set LED pins as outputs
+  for (int i = 0; i < 8; i++) {
+    pinMode(ledPins[i], OUTPUT);
+    digitalWrite(ledPins[i], HIGH);
+  }
+
+  // Set input pins as inputs
+  for (int i = 0; i < 8; i++) {
+    pinMode(inputPins[i], INPUT_PULLUP);
+  }
 
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
@@ -72,11 +91,17 @@ void setup() {
   }
 
   // configure the LED
-  pinMode(ledPin, OUTPUT);
-  digitalWrite(ledPin, LOW);
+//  pinMode(ledPin8, OUTPUT);
+//  digitalWrite(ledPin8, LOW);
 
   // configure a single coil at address 0x00
-  modbusTCPServer.configureCoils(0x00, 1);
+//  modbusTCPServer.configureCoils(0x00, 1);
+
+
+  
+  // Configure coils
+//  modbusTCPServer.configureCoils(0, 8);  // Configure 8 coils
+  modbusTCPServer.configureCoils(0,8 + startInputAddressCoil + numInputAddressCoil);  // Configure 8 coils
 }
 
 void loop() {
@@ -104,13 +129,25 @@ void loop() {
 
 void updateLED() {
   // read the current value of the coil
-  int coilValue = modbusTCPServer.coilRead(0x00);
+//  int coilValue = modbusTCPServer.coilRead(0x00);
+//
+//  if (coilValue) {
+//    // coil value set, turn LED on
+//    digitalWrite(ledPin8, HIGH);
+//  } else {
+//    // coild value clear, turn LED off
+//    digitalWrite(ledPin8, LOW);
+//  }
 
-  if (coilValue) {
-    // coil value set, turn LED on
-    digitalWrite(ledPin, HIGH);
-  } else {
-    // coild value clear, turn LED off
-    digitalWrite(ledPin, LOW);
-  }
+    for (int i = 0; i < 8; i++) {
+      bool coilValue = modbusTCPServer.coilRead(i);
+//      digitalWrite(ledPins[i], coilValue ? HIGH : LOW);
+        digitalWrite(ledPins[i], coilValue ? LOW : HIGH);
+    }
+
+    // Read the state of input pins and update Modbus coils
+      for (int i = 0; i < numInputAddressCoil; i++) {
+        int value = digitalRead(inputPins[i]);
+        modbusTCPServer.coilWrite(startInputAddressCoil+i, value);
+      }
 }

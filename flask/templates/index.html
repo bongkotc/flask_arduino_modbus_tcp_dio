@@ -1,0 +1,89 @@
+{% extends "layout.html"%}
+
+
+{% block body %}
+<div class="container" style="margin-top: 20px;">
+ <div class="row">
+    <div class="col-md-24">
+        <h3>Arduino Digital Input/Output</h3>
+    </div>
+ </div>   
+ <div class="row">
+    <div class="col-md-4">
+        <h4>อ่านค่าสวิตช์</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="table-primary">
+                    <td >
+                        <h2 >ปุ่มกด : </h2>
+                    </td>
+                    <td >
+                        <h2 id="dataLabel">...</h2>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+ </div> 
+ <div class="row">
+    <div class="col-md-4">
+        <hr>
+        <h4>สั่งงานไฟ LED</h4>
+        <button id="setLedOn" class="btn btn-primary">ON</button>
+        <button id="setLedOff" class="btn btn-secondary">OFF</button>
+    </div>
+ </div>
+</div>
+
+<script>
+    // let count = 0;
+    // const timerElement = document.getElementById('timer');
+
+    // function updateTime() {
+    //     fetch('/')
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             // document.getElementById('timer').textContent = data;
+    //         })
+    //         .catch(error => console.error('Error:', error));
+    // }
+
+    // setInterval(() => {
+    //     // count++;
+    //     // timerElement.textContent = count;
+    //     updateTime();
+    // }, 1000);
+</script>
+<!-- <script>
+    function submitForm(event) {
+        event.preventDefault(); // Prevent the form from refreshing the page
+
+        const formData = new FormData(event.target);
+        const data = {};
+        formData.forEach((value, key) => (data[key] = value));
+
+        fetch('/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('response').textContent = data.message;
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('myForm').addEventListener('submit', submitForm);
+    });
+</script> -->
+{% endblock %}
