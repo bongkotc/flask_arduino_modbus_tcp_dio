@@ -9,16 +9,15 @@ def read_button():
 
     #เปิดการเชื่อมต่อ
     if not modbus_client.connect():
-        print("Failed to connect to the Modbus TCP server")
+        print("ไม่สามารถเชื่อมต่อ Modbus TCP server ได้")
         return
 
     # ทดสอบอ่าน holding registers
-    # registers = modbus_client.read_holding_registers(address=0, count=1)
     registers = modbus_client.read_coil_registers(address=10, count=8)
     if registers is not None:
-        print(f"Read registers: {registers}")
+        print(f"Read ข้อมูล: {registers}")
     else:
-        print("Failed to read registers")
+        print("อ่าน Coil ไม่ได้")
 
     #ปิดการเชื่อมต่อ
     modbus_client.close()
@@ -30,15 +29,15 @@ def read_led():
 
     #เปิดการเชื่อมต่อ
     if not modbus_client.connect():
-        print("Failed to connect to the Modbus TCP server")
+        print("ไม่สามารถเชื่อมต่อ Modbus TCP server ได้")
         return
 
     # ทดสอบอ่าน Coils registers
     registers = modbus_client.read_coil_registers(address=0, count=8)
     if registers is not None:
-        print(f"Read registers: {registers}")
+        print(f"ข้อมูลที่อ่านได้คือ: {registers}")
     else:
-        print("Failed to read registers")
+        print("การอ่านข้อมูล Error")
 
     #ปิดการเชื่อมต่อ
     modbus_client.close()
@@ -50,7 +49,7 @@ def write_led_by_bit(bit, value):
 
     #เปิดการเชื่อมต่อ
     if not modbus_client.connect():
-        print("Failed to connect to the Modbus TCP server")
+        print("ไม่สามารถเชื่อมต่อ Modbus TCP server ได้")
         return
 
     # ทดสอบอ่าน Coils registers
@@ -62,44 +61,20 @@ def write_led_by_bit(bit, value):
     print(bit, value,state)
     registers = modbus_client.write_coil_register(address=int(bit), boolValue=state)
     if registers is not None:
-        print(f"Read registers: {registers}")
+        print(f"ข้อมูลที่อ่านได้คือ: {registers}")
     else:
-        print("Failed to read registers")
+        print("การอ่านข้อมูล Error")
 
     #ปิดการเชื่อมต่อ
     modbus_client.close()
     return registers
 
-def write_arduino(data):
-    port = 'COM8'  # เลือก Com port ที่ Arduino ต่อใช้งาน
-    led_address = 1
-    modbus_client = ModbusClientWrapper(port=port)
 
-    #เปิดการเชื่อมต่อ
-    if not modbus_client.connect():
-        print("Failed to connect to the Modbus RTU server")
-        return
-
-    # Write to a holding register
-    if modbus_client.write_register(address=led_address, value=int(data)):
-        print("Write successful")
-    else:
-        print("Failed to write register")
-
-    #ปิดการเชื่อมต่อ
-    modbus_client.close()
-    return True
 #ไฟล์ เริ่มต้น
 @app.route("/")
 def index():
     arduino_data = read_button()
     return render_template("index.html",arduino_data=jsonify(arduino_data))
-
-#API อ่านค่า Modbus
-@app.route('/mosbudRead')
-def mosbudRead():
-    arduino_data = read_button()
-    return jsonify(arduino_data)
 
 #API อ่านค่า Modbus
 @app.route('/readButtons')
@@ -121,9 +96,6 @@ def writeLedByBit():
 
     if bit is not None and value is not None:
         write_led_by_bit(int(bit),int(value))
-    # arduino_data = read_led()
-    # return jsonify(arduino_data)
-    # Sample data to return as JSON
     data = {
         'bit': bit,
         'value': value,

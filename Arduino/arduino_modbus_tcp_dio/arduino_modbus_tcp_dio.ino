@@ -61,7 +61,7 @@ void setup() {
     Serial.println("ไม่สามารถ Start Modbus Server ได้");
     while (1);
   }
-  modbusTCPServer.configureCoils(startOutputAddressCoil,numOutputAddressCoil + startInputAddressCoil + numInputAddressCoil);  // Configure 8 coils
+  modbusTCPServer.configureCoils(startOutputAddressCoil,numOutputAddressCoil + startInputAddressCoil + numInputAddressCoil);  // จอง buffer ของ Coil
 }
 
 void loop() {
