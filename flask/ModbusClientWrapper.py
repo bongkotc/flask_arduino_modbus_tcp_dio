@@ -5,9 +5,9 @@ from pymodbus.exceptions import ModbusException
 from pymodbus.client.tcp import ModbusTcpClient as ModbusClient
 
 class ModbusClientWrapper:
-    #  = '192.168.1.177'
+    #  = '192.168.1.100'
     # server_port = 502
-    def __init__(self, server_ip="192.168.1.177", server_port=502, unit=1, timeout=5):
+    def __init__(self, server_ip="192.168.1.100", server_port=502, unit=1, timeout=5):
         self.client = ModbusClient(
             server_ip,port=server_port,
             timeout=timeout,

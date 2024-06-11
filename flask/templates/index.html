@@ -1,120 +1,507 @@
-{% extends "layout.html"%}
-
-
-{% block body %}
-<div class="container" style="margin-top: 20px;">
- <div class="row">
+{% extends "layout.html"%} {% block body %}
+<div class="container" style="margin-top: 20px">
+  <div class="row">
     <div class="col-md-24">
-        <h3>Arduino Mega2560 Digital Input(Button)/Output(Led)</h3>
+      <h3>Arduino Mega2560 + W5100 + Modbus TCP Digital Input(ปุ่ม)/Output(หลอดไฟ LED)</h3>
     </div>
- </div>   
- <div class="row">
+  </div>
+  <div class="row">
     <div class="col-md-4">
-        <h4>อ่านค่าสวิตช์</h4>
-        <table class="table table-hover table-bordered border-primary">
-            <thead>
-                <tr>
-                    <th ><h2 >ปุ่ม</h2></th>
-                    <th><h2 >สถานะ</h2></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td >
-                        <h4 >1</h4>
-                    </td>
-                    <td >
-                        <h4 id="button1">...</h4>
-                    </td>
-                </tr>
-                <tr>
-                    <td >
-                        <h4 >2</h4>
-                    </td>
-                    <td >
-                        <h4 id="button2">...</h4>
-                    </td>
-                </tr>
-                <tr>
-                    <td >
-                        <h4 >3</h4>
-                    </td>
-                    <td >
-                        <h4 id="button3">...</h4>
-                    </td>
-                </tr>
-                <tr>
-                    <td >
-                        <h4 >4</h4>
-                    </td>
-                    <td >
-                        <h4 id="button4">...</h4>
-                    </td>
-                </tr>
-                <tr>
-                    <td >
-                        <h4 >5</h4>
-                    </td>
-                    <td >
-                        <h4 id="button5">...</h4>
-                    </td>
-                </tr>
-                <tr>
-                    <td >
-                        <h4 >6</h4>
-                    </td>
-                    <td >
-                        <h4 id="button6">...</h4>
-                    </td>
-                </tr>
-                <tr>
-                    <td >
-                        <h4 >7</h4>
-                    </td>
-                    <td >
-                        <h4 id="button7">...</h4>
-                    </td>
-                </tr>
-                <tr>
-                    <td >
-                        <h4 >8</h4>
-                    </td>
-                    <td >
-                        <h4 id="button8">...</h4>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+      <h4>อ่านค่าสวิตช์</h4>
+      <table class="table table-hover table-bordered border-primary">
+        <thead>
+          <tr>
+            <th><h2>ปุ่ม</h2></th>
+            <th><h2>สถานะ</h2></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <h4>1</h4>
+            </td>
+            <td>
+              <h4 id="button1">...</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>2</h4>
+            </td>
+            <td>
+              <h4 id="button2">...</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>3</h4>
+            </td>
+            <td>
+              <h4 id="button3">...</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>4</h4>
+            </td>
+            <td>
+              <h4 id="button4">...</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>5</h4>
+            </td>
+            <td>
+              <h4 id="button5">...</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>6</h4>
+            </td>
+            <td>
+              <h4 id="button6">...</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>7</h4>
+            </td>
+            <td>
+              <h4 id="button7">...</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>8</h4>
+            </td>
+            <td>
+              <h4 id="button8">...</h4>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
- </div> 
- <div class="row">
     <div class="col-md-4">
-        <hr>
-        <h4>สั่งงานไฟ LED</h4>
-        <button id="setLedOn" class="btn btn-primary">ON</button>
-        <button id="setLedOff" class="btn btn-secondary">OFF</button>
+      <h4>สั่งงานหลอดไฟ LED</h4>
+      <table class="table table-hover table-bordered border-primary">
+        <thead>
+          <tr>
+            <th><h2>หลอดไฟ</h2></th>
+            <th><h2>สั่งงาน</h2></th>
+            <th><h2>สถานะ</h2></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <h4>1</h4>
+            </td>
+            <td>
+              <div
+                class="btn-group"
+                role="group"
+                aria-label="Basic radio toggle button group"
+              >
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="btnradio_led1"
+                  id="btn_led1_off"
+                  autocomplete="off"
+                  checked
+                  onclick="handleRadioClick(this)"
+                />
+                <label class="btn btn-outline-danger" for="btn_led1_off"
+                  >ปิด</label
+                >
+
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="btnradio_led1"
+                  id="btn_led1_on"
+                  autocomplete="off"
+                  onclick="handleRadioClick(this)"
+                />
+                <label class="btn btn-outline-success" for="btn_led1_on"
+                  >เปิด</label
+                >
+              </div>
+            </td>
+            <td>
+              <h4 id="led1">...</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>2</h4>
+            </td>
+            <td>
+              <div
+                class="btn-group"
+                role="group"
+                aria-label="Basic radio toggle button group"
+              >
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="btnradio_led2"
+                  id="btn_led2_off"
+                  autocomplete="off"
+                  checked
+                  onclick="handleRadioClick(this)"
+                />
+                <label class="btn btn-outline-danger" for="btn_led2_off"
+                  >ปิด</label
+                >
+
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="btnradio_led2"
+                  id="btn_led2_on"
+                  autocomplete="off"
+                  onclick="handleRadioClick(this)"
+                />
+                <label class="btn btn-outline-success" for="btn_led2_on"
+                  >เปิด</label
+                >
+              </div>
+            </td>
+            <td>
+              <h4 id="led2">...</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>3</h4>
+            </td>
+            <td>
+              <div
+                class="btn-group"
+                role="group"
+                aria-label="Basic radio toggle button group"
+              >
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="btnradio_led3"
+                  id="btn_led3_off"
+                  autocomplete="off"
+                  checked
+                  onclick="handleRadioClick(this)"
+                />
+                <label class="btn btn-outline-danger" for="btn_led3_off"
+                  >ปิด</label
+                >
+
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="btnradio_led3"
+                  id="btn_led3_on"
+                  autocomplete="off"
+                  onclick="handleRadioClick(this)"
+                />
+                <label class="btn btn-outline-success" for="btn_led3_on"
+                  >เปิด</label
+                >
+              </div>
+            </td>
+            <td>
+              <h4 id="led3">...</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>4</h4>
+            </td>
+            <td>
+              <div
+                class="btn-group"
+                role="group"
+                aria-label="Basic radio toggle button group"
+              >
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="btnradio_led4"
+                  id="btn_led4_off"
+                  autocomplete="off"
+                  checked
+                  onclick="handleRadioClick(this)"
+                />
+                <label class="btn btn-outline-danger" for="btn_led4_off"
+                  >ปิด</label
+                >
+
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="btnradio_led4"
+                  id="btn_led4_on"
+                  autocomplete="off"
+                  onclick="handleRadioClick(this)"
+                />
+                <label class="btn btn-outline-success" for="btn_led4_on"
+                  >เปิด</label
+                >
+              </div>
+            </td>
+            <td>
+              <h4 id="led4">...</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>5</h4>
+            </td>
+            <td>
+              <div
+                class="btn-group"
+                role="group"
+                aria-label="Basic radio toggle button group"
+              >
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="btnradio_led5"
+                  id="btn_led5_off"
+                  autocomplete="off"
+                  checked
+                  onclick="handleRadioClick(this)"
+                />
+                <label class="btn btn-outline-danger" for="btn_led5_off"
+                  >ปิด</label
+                >
+
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="btnradio_led5"
+                  id="btn_led5_on"
+                  autocomplete="off"
+                  onclick="handleRadioClick(this)"
+                />
+                <label class="btn btn-outline-success" for="btn_led5_on"
+                  >เปิด</label
+                >
+              </div>
+            </td>
+            <td>
+              <h4 id="led5">...</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>6</h4>
+            </td>
+            <td>
+              <div
+                class="btn-group"
+                role="group"
+                aria-label="Basic radio toggle button group"
+              >
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="btnradio_led6"
+                  id="btn_led6_off"
+                  autocomplete="off"
+                  checked
+                  onclick="handleRadioClick(this)"
+                />
+                <label class="btn btn-outline-danger" for="btn_led6_off"
+                  >ปิด</label
+                >
+
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="btnradio_led6"
+                  id="btn_led6_on"
+                  autocomplete="off"
+                  onclick="handleRadioClick(this)"
+                />
+                <label class="btn btn-outline-success" for="btn_led6_on"
+                  >เปิด</label
+                >
+              </div>
+            </td>
+            <td>
+              <h4 id="led6">...</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>7</h4>
+            </td>
+            <td>
+              <div
+                class="btn-group"
+                role="group"
+                aria-label="Basic radio toggle button group"
+              >
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="btnradio_led7"
+                  id="btn_led7_off"
+                  autocomplete="off"
+                  checked
+                  onclick="handleRadioClick(this)"
+                />
+                <label class="btn btn-outline-danger" for="btn_led7_off"
+                  >ปิด</label
+                >
+
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="btnradio_led7"
+                  id="btn_led7_on"
+                  autocomplete="off"
+                  onclick="handleRadioClick(this)"
+                />
+                <label class="btn btn-outline-success" for="btn_led7_on"
+                  >เปิด</label
+                >
+              </div>
+            </td>
+            <td>
+              <h4 id="led7">...</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>8</h4>
+            </td>
+            <td>
+              <div
+                class="btn-group"
+                role="group"
+                aria-label="Basic radio toggle button group"
+              >
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="btnradio_led8"
+                  id="btn_led8_off"
+                  autocomplete="off"
+                  checked
+                  onclick="handleRadioClick(this)"
+                />
+                <label class="btn btn-outline-danger" for="btn_led8_off"
+                  >ปิด</label
+                >
+
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="btnradio_led8"
+                  id="btn_led8_on"
+                  autocomplete="off"
+                  onclick="handleRadioClick(this)"
+                />
+                <label class="btn btn-outline-success" for="btn_led8_on"
+                  >เปิด</label
+                >
+              </div>
+            </td>
+            <td>
+              <h4 id="led8">...</h4>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
- </div>
+  </div>
 </div>
 
 <script>
-    // let count = 0;
-    // const timerElement = document.getElementById('timer');
+//   $(document).ready(function () {
+    function handleRadioClick(radio) {
+      console.log("Selected radio button id:", radio.id);
+      console.log("Selected radio button value:", radio.value);
+      // Do something with the selected radio button value
+      if (radio.id == "btn_led1_on" || radio.id == "btn_led1_off") {
+        if (radio.id == "btn_led1_on") writeLedByBit({ bit: 0, value: 1 });
+        else if (radio.id == "btn_led1_off")
+          writeLedByBit({ bit: 0, value: 0 });
+      }
+      else if (radio.id == "btn_led2_on" || radio.id == "btn_led2_off") {
+        if (radio.id == "btn_led2_on") writeLedByBit({ bit: 1, value: 1 });
+        else if (radio.id == "btn_led2_off")
+          writeLedByBit({ bit: 1, value: 0 });
+      }
+      else if (radio.id == "btn_led3_on" || radio.id == "btn_led3_off") {
+        if (radio.id == "btn_led3_on") writeLedByBit({ bit: 2, value: 1 });
+        else if (radio.id == "btn_led3_off")
+          writeLedByBit({ bit: 2, value: 0 });
+      }
+      else if (radio.id == "btn_led4_on" || radio.id == "btn_led4_off") {
+        if (radio.id == "btn_led4_on") writeLedByBit({ bit: 3, value: 1 });
+        else if (radio.id == "btn_led4_off")
+          writeLedByBit({ bit: 3, value: 0 });
+      }
+      else if (radio.id == "btn_led5_on" || radio.id == "btn_led5_off") {
+        if (radio.id == "btn_led5_on") writeLedByBit({ bit: 4, value: 1 });
+        else if (radio.id == "btn_led5_off")
+          writeLedByBit({ bit: 4, value: 0 });
+      }
+      else if (radio.id == "btn_led6_on" || radio.id == "btn_led6_off") {
+        if (radio.id == "btn_led6_on") writeLedByBit({ bit: 5, value: 1 });
+        else if (radio.id == "btn_led6_off")
+          writeLedByBit({ bit: 5, value: 0 });
+      }
+      else if (radio.id == "btn_led7_on" || radio.id == "btn_led7_off") {
+        if (radio.id == "btn_led7_on") writeLedByBit({ bit: 6, value: 1 });
+        else if (radio.id == "btn_led7_off")
+          writeLedByBit({ bit: 6, value: 0 });
+      }
+      else if (radio.id == "btn_led8_on" || radio.id == "btn_led8_off") {
+        if (radio.id == "btn_led8_on") writeLedByBit({ bit: 7, value: 1 });
+        else if (radio.id == "btn_led8_off")
+          writeLedByBit({ bit: 7, value: 0 });
+      }
+    }
 
-    // function updateTime() {
-    //     fetch('/')
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             // document.getElementById('timer').textContent = data;
-    //         })
-    //         .catch(error => console.error('Error:', error));
-    // }
+    function writeLedByBit(params) {
+        $.ajax({
+            url: '/writeLedByBit',
+            type: 'GET',
+            data: params,
+            success: function(response) {
+                // $('#result').html(JSON.stringify(response));
+            },
+            error: function(error) {
+                // $('#result').html('Error: ' + JSON.stringify(error));
+            }
+        });
+    }
+//   });
+</script>
 
-    // setInterval(() => {
-    //     // count++;
-    //     // timerElement.textContent = count;
-    //     updateTime();
-    // }, 1000);
+<script>
+  // let count = 0;
+  // const timerElement = document.getElementById('timer');
+
+  // function updateTime() {
+  //     fetch('/')
+  //         .then(response => response.json())
+  //         .then(data => {
+  //             // document.getElementById('timer').textContent = data;
+  //         })
+  //         .catch(error => console.error('Error:', error));
+  // }
+
+  // setInterval(() => {
+  //     // count++;
+  //     // timerElement.textContent = count;
+  //     updateTime();
+  // }, 1000);
 </script>
 <!-- <script>
     function submitForm(event) {

@@ -11,11 +11,12 @@ def main():
 
     # ทดสอบอ่าน holding registers
     # registers = modbus_client.read_holding_registers(address=0, count=1)
-    registers = modbus_client.read_coil_registers(address=10, count=8)
-    if registers is not None:
-        print(f"Read registers: {registers}")
-    else:
-        print("Failed to read registers")
+
+    # registers = modbus_client.read_coil_registers(address=10, count=8)
+    # if registers is not None:
+    #     print(f"Read registers: {registers}")
+    # else:
+    #     print("Failed to read registers")
 
     # ทดสอบเขียน to a holding register
     # if modbus_client.write_register(address=0, value=125):
@@ -24,10 +25,10 @@ def main():
     #     print("Failed to write register")
 
     # ทดสอบเขียน to a holding register
-    # if modbus_client.write_coil_register(address=2, boolValue=True):
-    #     print("Write successful")
-    # else:
-    #     print("Failed to write register")
+    if modbus_client.write_coil_register(address=2, boolValue=False):
+        print("Write successful")
+    else:
+        print("Failed to write register")
 
     # if modbus_client.write_coil_registers(address=0, boolValueArray=[True, False, True, False, True, False, True, True]):
     #     print("Write successful")
