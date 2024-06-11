@@ -3,6 +3,7 @@ from ModbusClientWrapper import ModbusClientWrapper
 
 app=Flask(__name__)
 
+#อ่านค่าปุ่มกดจาก Board Arduino
 def read_button():
     #สร้าง modbus client
     modbus_client = ModbusClientWrapper()
@@ -23,6 +24,7 @@ def read_button():
     modbus_client.close()
     return registers
 
+#อ่านค่าหลอดไฟจาก Board Arduino
 def read_led():
     # สร้าง Object MOdbus
     modbus_client = ModbusClientWrapper()
@@ -43,6 +45,7 @@ def read_led():
     modbus_client.close()
     return registers
 
+#เขียนสั่งงานหลอดไฟไปที่ Board Arduino
 def write_led_by_bit(bit, value):
     # สร้าง Object MOdbus
     modbus_client = ModbusClientWrapper()
@@ -77,13 +80,13 @@ def index():
     return render_template("index.html",arduino_data=jsonify(arduino_data))
 
 #API อ่านค่า Modbus
-@app.route('/readButtons')
+@app.route('/readButtons', methods=['GET'])
 def readButtons():
     arduino_data = read_button()
     return jsonify(arduino_data)
 
 #API อ่านค่า Modbus
-@app.route('/readLeds')
+@app.route('/readLeds', methods=['GET'])
 def readLeds():
     arduino_data = read_led()
     return jsonify(arduino_data)
@@ -101,14 +104,6 @@ def writeLedByBit():
         'value': value,
     }
     return jsonify(data)
-
-#API เขียนค่า Modbus
-@app.route('/mosbudWrite',methods=['POST'])
-def mosbudWrite():
-    data = request.form["data"]
-    print("data = ", data)
-    arduino_data = write_arduino(data)
-    return redirect("/")
 
 if __name__ == "__main__":
     app.run(debug=True)

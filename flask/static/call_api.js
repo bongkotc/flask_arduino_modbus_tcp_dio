@@ -1,34 +1,10 @@
 $(document).ready(function() {
-    $('#setLedOn').click(function() {
-        $.ajax({
-            url: '/mosbudWrite',
-            type: 'POST',
-            data: {'data':1},
-            success: function(response) {
-            },
-            error: function(error) {
-                console.log('Error:', error);
-            }
-        });
-    });
-    $('#setLedOff').click(function() {
-        $.ajax({
-            url: '/mosbudWrite',
-            type: 'POST',
-            data: {'data':0},
-            success: function(response) {
-            },
-            error: function(error) {
-                console.log('Error:', error);
-            }
-        });
-    });
+    //call url ขออ่านค่าปุ่มกด
     function updateReadButtons() {
         $.ajax({
             url: '/readButtons',
             type: 'GET',
             success: function(response) {
-                // alert(JSON.stringify(response))
                 if(response!=null){
                     if(response.length==8){
                         let btn_ids = ['#button1','#button2','#button3','#button4','#button5','#button6','#button7','#button8']
@@ -45,12 +21,12 @@ $(document).ready(function() {
         });
     }
 
+    //call url ขออ่านค่าหลอดไฟ
     function updateReadLeds() {
         $.ajax({
             url: '/readLeds',
             type: 'GET',
             success: function(response) {
-                // alert(JSON.stringify(response))
                 if(response!=null){
                     if(response.length==8){
                         let btn_ids = ['#led1','#led2','#led3','#led4','#led5','#led6','#led7','#led8']
@@ -99,14 +75,10 @@ $(document).ready(function() {
         });
     }
 
-    
 
-    // timer update ทุกๆ 0.5 วินาที (500 มิลลิวินาที)
+    // timer update ทุกๆ(250 มิลลิวินาที)
     setInterval(updateReadButtons, 250);
 
-    // timer update ทุกๆ 0.5 วินาที (500 มิลลิวินาที)
+    // timer update ทุกๆ (250 มิลลิวินาที)
     setInterval(updateReadLeds, 250);
-
-    // เรียกฟังก์ชันทันทีเมื่อโหลดหน้าเว็บ
-    // updateLabel();
 });
